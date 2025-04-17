@@ -1,0 +1,10 @@
+debug/ChatBusiness.o
+debug/EmailManager.o
+debug/MySQLManager.o
+debug/MyTcpServer.o
+debug/MyTcpSocket.o
+debug/main.o
+debug/moc_ChatBusiness.o
+debug/moc_MySQLManager.o
+debug/moc_MyTcpServer.o
+debug/moc_MyTcpSocket.o

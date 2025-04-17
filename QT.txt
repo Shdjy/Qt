@@ -1,0 +1,484 @@
+QT
+窗口类相关函数
+	设置窗口大小:resize(int w,int h);
+	设置窗口为固定大小：setFixSize(int w, int h);
+	设置窗口标题：setWindowTitle("窗口名字“);
+	设置窗口标题图标： setWindowIcon(QIcon("路径"));
+	
+按钮类
+	QPushButton类
+	创建按钮：QPushButton *button = new QPushButton;//有重载带有参数的构造函数
+	设置按钮父对象：setParent(this);
+	设置按钮文字：button->setText("按钮名字");
+	设置按钮位置：move(x, y);
+	设置按钮大小：setFixSize(x, y);
+	
+
+信号和槽机制
+	connect（sender,signal,receiver,slot）
+	函数四个参数：信号发出者，信号，信号接受者，接受信号执行任务。
+
+	自定义信号与槽
+
+	1，确定场景（老师饿了，学生请客）
+	2，添加两个类
+	3，在老师类中声明信号，在学生类中声明并实现槽函数
+	4，创建对象+连接
+	5，触发信号
+
+	重载自定义信号与槽
+
+	1，重写信号声明
+	2，重写槽函数声明以及定义
+	3，利用函数指针指向函数地址，在做连接
+
+Lambda表达式
+	[捕获列表](参数列表) mutable -> return-type{}
+
+
+QMianWindow类
+菜单栏，工具栏，状态栏
+	1菜单栏类 QMenuBar://只能有一个
+	 菜单类QMeny:
+	 子菜单（菜单项）：QAction类
+	创建菜单栏：QMenuBar *menubar = new QMenuBar(this);
+		   QMenuBar *menubar = menuBar();
+	设置菜单栏对象：this->setMenuBar(menubar);
+	创建菜单：QMenu *menu1 = new QMenu("文件");
+	往菜单栏添加菜单：menubar->addMenu(menu1);
+	创建菜单项：    QAction *act1 = new QAction("打开文件");
+	往菜单添加菜单项： menu1->addAction(act1);
+
+	工具栏：
+	创建工具栏：QToolBar *toolbar = new QToolBar(this);
+	添加工具栏： this->addToolBar(toolbar);
+	添加工具项： toolbar->addAction(act1);
+	设置工具栏不可移动：toolbar->setMovable(false)；
+	设置停靠区域：toolbar->setAllowedAreas(Qt::LeftToolBarArea | Qt::RightToolBarArea);//左右停靠
+	设置浮动状态：toolbar->setFloatable(true);
+
+	状态栏：最多只有一个	
+	创建状态栏：QStatusBar *statusbar = new QStatusBar(this);
+		   QStatusBar*statusbar = statusBar();
+	增加临时信息： statusbar->showMessage("状态栏显示成功",3000);
+	增加正式信息： //增加正式信息（状态栏左侧）
+    		     //增加控件或按钮
+    	  	    QLabel *label1 = new QLabel("打开文件", this);
+    		    statusbar->addWidget(label1);
+	增加永久信息：//增加永久信息（状态栏右侧）
+    		     QLabel *label2 = new QLabel("2131987625@qq.com",this);
+    		     statusbar->addPermanentWidget(label2);
+
+铆接部件
+	创建部件：QDockWidget *dockwidget = new QDockWidget("first", this);
+	添加部件：this->addDockWidget(Qt::TopDockWidgetArea, dockwidget);
+
+核心部件
+	
+
+
+
+资源文件
+	将程序运行时所需要的资源以二进制的形式存储与可执行文件的内部。
+加载图片：
+	1，给菜单项加载图片
+	//给菜单项增加图片信息
+    	//创建图片控件
+   	 QPixmap pix;
+   	 //选择图片
+   	 pix.load(":/open");
+    	act1->setIcon(QIcon(pix));
+	2，添加背景图
+	this->resize(1000,1000);
+    	this->setAutoFillBackground(true);
+    	QPixmap back = QPixmap(":/Image/Sunny.jpg").scaled(this->size());
+
+    	QPalette palette;
+    	palette.setBrush(QPalette::Background, QBrush(back));
+    	this->setPalette(palette);
+
+
+UI
+
+
+QDialog
+
+模态
+    QDialog dialog;
+    dialog.setWindowTitle(tr("hello, dialog!"));
+    dialog.exec();
+exec()
+open()
+非模态
+show()
+不会阻塞当前线程，立刻返回
+1，对话框在堆上创建
+2，设置对话框关闭自动销毁
+    QDialog *dialog = new QDialog;
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->setWindowTitle(tr("hello, dialog!"));
+    dialog->show();
+
+
+标准对话框
+
+颜色，文件，字体，显示信息。。。。。
+
+文件对话框
+QFileDialog
+qt帮助文档
+打开一个文件	QString fileName = QFileDialog::getOpenFileName(this, tr("打开文件"),
+                                                      "D:\\c++QT\\qt_dialog",
+                                                      tr("Images (*.png *.xpm *.jpg)"));
+打开多种类型	"Images (*.png *.xpm *.jpg);;Text files (*.txt);;XML files (*.xml)"
+...................................
+
+
+颜色对话框
+QColorDialog::getColor生成颜色对话框 返回颜色变量
+
+QPalette pal = ui->plainTextEdit->palette();
+    QColor inicolor = pal.color(QPalette::Text);
+    QColor color = QColorDialog::getColor(inicolor, this,"选择颜色");
+    //判断选择颜色是否有效，如果有效设置编辑字体颜色
+    if(color.isValid())
+    {
+        pal.setColor(QPalette::Text,color);
+        ui->plainTextEdit->setPalette(pal);
+    }
+.................................................
+
+选择字体对话框
+QFontDialog::getFont生成选择字体对话框
+
+bool ok;
+    //获取原有文本字体
+    QFont inifont = ui->plainTextEdit->font();
+    QFont font = QFontDialog::getFont(
+                    &ok, inifont, this);
+    if (ok)
+    {
+        // the user clicked OK and font is set to the font the user selected
+        ui->plainTextEdit->setFont(font);
+    }
+    else
+    {
+        // the user canceled the dialog; font is set to the initial
+        // value, in this case Helvetica [Cronyx], 10
+    }
+
+消息对话框  QMessageBox
+
+//QMessageBox::critical(this,"标题","消息内容");//错误弹窗
+    //QMessageBox::warning(this,"标题","消息内容");//警告弹窗
+    //QMessageBox::information(this,"标题","消息内容",QMessageBox::Ok,QMessageBox::NoButton);
+    //消息选择弹窗
+    QMessageBox::StandardButton result;
+    result = QMessageBox::question(this,"消息选择框","请选择",QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,QMessageBox::NoButton);
+    if(QMessageBox::Yes == result)
+    {
+        QMessageBox::information(this,"你的选择","yes");
+    }
+
+
+输入对话框  QInputDialog
+
+ //生成文字对话框
+    bool ok;
+//    QString text = QInputDialog::getText(this, tr("输入文字对话框"),
+//                                              tr("请输入文字:"), QLineEdit::Normal,
+//                                              "", &ok);
+//         if (ok && !text.isEmpty())
+//         {
+//             ui->plainTextEdit->appendPlainText(text);
+//         }
+
+
+
+
+布局管理
+绝对定位，提供长高，坐标，窗口改变位置不变
+布局定位，指定使用布局（垂直，水平，网状，表格）
+
+一般使用widget布局
+
+实现登录界面
+	添加新的qt设计师界面类form
+	 ui->setupUi(this);
+    this->new_window = new Form();
+	//登录
+    connect(ui->pushButton,&QPushButton::clicked,this,[=](){
+        QString str = ui->lineEdit->text();
+        if("shd" == str)
+        {
+            this->hide();
+            this->new_window->show();
+        }
+    });
+	//返回登录
+    connect(this->new_window,&Form::back,this,[=](){
+        this->new_window->hide();
+        this->show();
+    });
+	
+	新的form。cpp中
+	connect(ui->pushButton,&QPushButton::clicked,this,&Form::back);
+
+
+标签类    QLabel
+
+创建
+	代码
+	 QLabel *label = new QLabel(this);
+         label->setText("这是一个标签");
+         label->move(100,100);
+	ui
+	拖拽，属性设置大小文字
+	 ui->label1->setText("<h1><a href=\"https://www.baidu.com\">百度</a></h1>");
+         ui->label1->setOpenExternalLinks(true);//点击超链接时打开外部浏览器访问百度网站。
+
+标签显示图片
+	//设置图片
+    QPixmap pix;
+    pix.load(":/Image/butterfly.png");
+    label->setPixmap(pix);
+
+标签显示动图
+
+ //显示动画
+    QMovie *movie = new QMovie(":/Image/mario.gif");
+    ui->label_gif->setMovie(movie);
+    movie->start();
+
+    //动画暂停
+    connect(ui->pushButton,&QPushButton::clicked,movie,[=](){
+        movie->stop();
+    });
+
+    //动画继续
+    connect(ui->pushButton_2,&QPushButton::clicked,movie,[=](){
+        movie->start();
+    });
+
+
+QLineEdit类
+创建设置内容，显示内容
+ QLineEdit *edit = new QLineEdit(this);
+    edit->move(100,100);
+    //设置内容
+    //edit->setText("代码创建的编辑框");
+
+    //获取编辑框的内容
+    QString str = ui->lineEdit->text();
+    edit->setText(str);
+输出模式
+//密码模式
+    edit->setEchoMode(QLineEdit::Password);
+
+设置留白
+	
+	void setTextMargins(int left, int top, int right, int bottom)
+
+
+自定义控件
+重复性使用的窗口或者控件分装成自定义的控件，可减少创建次数，使用时widget提升为某类。
+
+
+栈容器
+QStackedWidget
+同样需要类的提升
+	 ui->stackedWidget->setCurrentIndex(0);
+
+   	connect(ui->pushButton,&QPushButton::clicked,this,[=](){
+        	ui->stackedWidget->setCurrentIndex(0);
+    	});
+    	connect(ui->pushButton_2,&QPushButton::clicked,this,[=](){
+        	ui->stackedWidget->setCurrentIndex(1);
+    	});
+
+事件概述
+	事件派发->事件过滤器->事件分发->事件处理阶段
+	事件循环开始：exec（）函数
+
+例子：
+重写窗口关闭事件，closeevent();
+重写调节大小事件，resizeEvent（）；
+	新建工程-创建一个类继承于QWidget
+	子类声明重写的事件
+	子类.cpp中实现重写事件。
+
+重写鼠标按下，释放，移动事件
+1，新建label类继承QLabel（需要修改代码.h文件.cpp文件），ui绘制label提升新创建的MyLabel类。
+2，查看帮助文档找到类的事件函数
+3，MyLabel.h文件声明函数，对应的.cpp文件实现。
+
+重写事件分发事件
+监听Tab按键
+声明重写函数，实现函数（bool Widget::event(QEvent *event)
+{
+    if(event->type() == QEvent::KeyPress)
+    {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+        if(keyEvent->key() == Qt::Key_Tab)
+        {
+            //qDebug()<<"Tab键被按下";
+            QMessageBox::information(this, "提示", "Tab键被按下");
+            return true;
+        }
+    }
+    return QWidget::event(event);
+}）
+
+
+事件过滤器
+使用，子类重写
+1，声明事件过滤器
+2，.cpp文件中实现（1，判断。2，事件是否过滤。3返回真或假）
+
+QT画笔
+
+void Widget::paintEvent(QPaintEvent *p)
+{
+    QPainter painter(this);
+    painter.drawLine(0, 0, 300, 300);
+    painter.setPen(Qt::red);
+    painter.drawRect(0, 0, 300, 300);
+    painter.setPen(QPen(Qt::blue,5));
+    painter.drawEllipse(0, 0, 300, 300);
+}
+
+
+Qt：XML文件操作
+
+void Widget::on_pushButton_clicked()
+{
+    //xml写入
+    QDomDocument doc;
+    //文档对象创建一个标签
+    QDomElement root = doc.createElement("root");
+    //添加到文档对象
+    doc.appendChild(root);
+
+    auto stu = doc.createElement("student");
+    root.appendChild(stu);
+
+    //为标签页添加属性
+    stu.setAttribute("id","123");
+    auto name = doc.createElement("Name");
+    auto desc = doc.createElement("Desc");
+    stu.appendChild(name);
+    stu.appendChild(desc);
+
+    name.appendChild(doc.createTextNode("浩东"));
+    desc.appendChild(doc.createTextNode("三好学生"));
+
+    QString filename = QFileDialog::getSaveFileName(this,"保存xml");
+    //文件对象
+    QFile file(filename);
+    if(!file.open(QIODevice::WriteOnly))
+    {
+        return;
+    }
+
+    //保存文件
+    QTextStream outStream(&file);//使用文件流，创建文本流对象
+    doc.save(outStream,4);
+}
+
+<root>
+    <student id="123">
+        <Name>浩东</Name>
+        <Desc>三好学生</Desc>
+    </student>
+</root>
+
+
+struct Stu
+{
+    int id;
+    QString name;
+    QString desc;
+};
+
+void Widget::on_pushButton_2_clicked()
+{
+    //xml内容读取
+    QFile file("./testLoad.xml");
+    if(!file.open(QIODevice::ReadOnly))
+    {
+        return;
+    }
+
+    QVector<Stu> vec;
+    //进行读取
+    QDomDocument doc;
+    //关联文件
+    doc.setContent(&file);
+    //查找第一个子标签
+    auto root = doc.firstChildElement("root");
+    //root的第一个子标签
+    auto stu = root.firstChildElement("student");
+
+    while(!stu.isNull())
+    {
+        //进行标签解析
+        Stu stuInfo;
+        stuInfo.id = stu.attribute("id").toUInt();
+        stuInfo.name = stu.firstChildElement("Name").text();
+        stuInfo.desc = stu.firstChildElement("Desc").text();
+
+        vec.append(stuInfo);
+        //读取下一个hero标签
+        stu = stu.nextSiblingElement("student");
+    }
+    //显示到ui
+    QString contents = "";
+    for(auto info : vec)
+    {
+        contents += "Id:" +  QString::number(info.id);
+        contents += " Name:" + info.name;
+        contents += " Desc:" + info.desc;
+        contents += "\n----------------\n";
+    }
+    ui->textEdit->setText(contents);
+}
+
+QT treewidget控件
+已ui界面创建为例
+添加结点；QtreeWidgetItem *item = new QtreeWidgetItem(ui->treeWidget);
+//调用构造函数时指定父节点
+//使用函数addTopLevelItem(item);
+通过容器QList容器批量添加
+QList<QTreeWidgetItem*> items;
+items.append(item1);
+items.append(item2);
+ui->treeWidget->addTopLevelItems(items);
+
+给节点加复选框
+item->setCheckState(0, Qt::Unchecked);
+Qt::Unchecked 未选中状态
+Qt::Checked 选中状态
+Qt::PartiallyChecked 部分选中状态
+
+给节点加图片
+item->setIcon(0, "图片路径");
+
+多列树形控件
+treeWidget->setColumnCont(列数);
+
+添加内容
+QStringList c;
+c<<"内容1"<<"内容2"<<"内容3";
+QTreeWidgetItem *item = new QTreeWidgetItem(item, c);
+
+treeWidget信号与槽
+点击，itemClicked
+槽函数展开节点,expandItem
+
+
+
+
+补充:
+QTextEdit类
+添加字符append(字符串)
+获取编辑框的字符toPlanText();

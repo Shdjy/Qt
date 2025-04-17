@@ -1,0 +1,16 @@
+release/AddFriendDialog.o
+release/ChatMainWindow.o
+release/ChatWidget.o
+release/MyTcpSocket.o
+release/NetworkBusiness.o
+release/RegisterDialog.o
+release/SignInDialog.o
+release/main.o
+release/qrc_WinHighDPI.o
+release/moc_AddFriendDialog.o
+release/moc_ChatMainWindow.o
+release/moc_ChatWidget.o
+release/moc_MyTcpSocket.o
+release/moc_NetworkBusiness.o
+release/moc_RegisterDialog.o
+release/moc_SignInDialog.o

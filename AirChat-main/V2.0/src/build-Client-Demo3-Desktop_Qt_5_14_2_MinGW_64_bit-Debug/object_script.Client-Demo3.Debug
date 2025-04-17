@@ -1,0 +1,16 @@
+debug/AddFriendDialog.o
+debug/ChatMainWindow.o
+debug/ChatWidget.o
+debug/MyTcpSocket.o
+debug/NetworkBusiness.o
+debug/RegisterDialog.o
+debug/SignInDialog.o
+debug/main.o
+debug/qrc_WinHighDPI.o
+debug/moc_AddFriendDialog.o
+debug/moc_ChatMainWindow.o
+debug/moc_ChatWidget.o
+debug/moc_MyTcpSocket.o
+debug/moc_NetworkBusiness.o
+debug/moc_RegisterDialog.o
+debug/moc_SignInDialog.o

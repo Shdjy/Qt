@@ -1,0 +1,10 @@
+release/ChatBusiness.o
+release/EmailManager.o
+release/MySQLManager.o
+release/MyTcpServer.o
+release/MyTcpSocket.o
+release/main.o
+release/moc_ChatBusiness.o
+release/moc_MySQLManager.o
+release/moc_MyTcpServer.o
+release/moc_MyTcpSocket.o
